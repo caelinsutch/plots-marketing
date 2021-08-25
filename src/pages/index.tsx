@@ -15,7 +15,7 @@ import { Field, FieldProps, Formik, FormikValues } from 'formik';
 import { object, string } from 'yup';
 import { addWaitlist } from '../Firebase';
 import { PHONE_REGEX, USER_ID } from '../Constants';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { WaitlistSuccess } from '../PageComponents/Home';
 
 type FormData = {
@@ -26,8 +26,12 @@ type FormData = {
 
 const HomePage: React.FC = () => {
   const toast = useToast();
-  const [userId, setUserId] = useState(localStorage.getItem(USER_ID));
+  const [userId, setUserId] = useState<string>();
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setUserId(localStorage.getItem(USER_ID) || undefined);
+  }, []);
 
   const signupSchema = object().shape({
     email: string().email().required('Email is required'),

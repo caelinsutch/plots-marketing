@@ -25,5 +25,19 @@ module.exports = {
     {
       resolve: '@chakra-ui/gatsby-plugin',
     },
+    {
+      resolve: 'gatsby-plugin-firebase',
+      options: {
+        credentials: {
+          apiKey: 'AIzaSyCE4ATdzq6p3aK1wIQ6u0Yr_vZvaCFZUmY',
+          authDomain: 'flare-social.firebaseapp.com',
+          projectId: 'flare-social',
+          storageBucket: 'flare-social.appspot.com',
+          messagingSenderId: '889204980004',
+          appId: '1:889204980004:web:0f69ea27a1f6709d84dbb1',
+          measurementId: 'G-LHCS3RKPVQ',
+        },
+      },
+    },
   ],
 };
