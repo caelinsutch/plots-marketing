@@ -11,6 +11,16 @@ const colors = {
   },
 };
 
-const theme = extendTheme({ config, colors });
+const components = {
+  Button: {
+    variants: {
+      solid: {
+        color: 'white',
+      },
+    },
+  },
+};
+
+const theme = extendTheme({ config, colors, components });
 
 export default theme;

@@ -218,7 +218,7 @@ const HomePage: React.FC = () => {
                           </Stack>
                         </Box>
                         <Button
-                          mt={6}
+                          my={6}
                           colorScheme="blue"
                           type="submit"
                           isDisabled={!props.isValid}
