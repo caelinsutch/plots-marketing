@@ -1,10 +1,16 @@
-import { extendTheme } from '@chakra-ui/react';
+import { ColorMode, extendTheme } from '@chakra-ui/react';
 
 const config = {
-  initialColorMode: 'dark',
+  initialColorMode: 'dark' as ColorMode,
   useSystemColorMode: false,
 };
 
-const theme = extendTheme({ config });
+const colors = {
+  blue: {
+    200: '#3BA7F5',
+  },
+};
+
+const theme = extendTheme({ config, colors });
 
 export default theme;
