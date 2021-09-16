@@ -10,18 +10,22 @@ import {
   FormControl,
   FormErrorMessage,
   useToast,
+  Checkbox,
+  Stack,
 } from '@chakra-ui/react';
 import { Field, FieldProps, Formik, FormikValues } from 'formik';
-import { object, string } from 'yup';
+import { array, object, string } from 'yup';
 import { addWaitlist } from '../Firebase';
 import { PHONE_REGEX, USER_ID } from '../Constants';
 import { useState, useEffect } from 'react';
 import { WaitlistSuccess } from '../PageComponents/Home';
+import Logo from '../Assets/Images/logo.svg';
 
 type FormData = {
   name: string;
   email: string;
   phone: string;
+  userType: string[];
 };
 
 const HomePage: React.FC = () => {
@@ -39,6 +43,7 @@ const HomePage: React.FC = () => {
       .required('Phone is required')
       .matches(PHONE_REGEX, 'Phone number is not valid'),
     name: string().required('Name is required'),
+    userType: array(),
   });
 
   const handleSubmit = async (
@@ -76,6 +81,16 @@ const HomePage: React.FC = () => {
         justifyContent="center"
       >
         <Box textAlign="center">
+          <Box mx="auto">
+            <Logo
+              style={{
+                width: '150px',
+                height: 'fit-content',
+                marginRight: 'auto',
+                marginLeft: 'auto',
+              }}
+            />
+          </Box>
           <Text fontSize="6xl" fontWeight="bold" as="h1">
             Plots
           </Text>
@@ -91,7 +106,12 @@ const HomePage: React.FC = () => {
                 <Box marginTop={2}>
                   <Formik
                     initialValues={
-                      { email: '', phone: '', name: '' } as FormData
+                      {
+                        email: '',
+                        phone: '',
+                        name: '',
+                        userType: [],
+                      } as FormData
                     }
                     onSubmit={handleSubmit}
                     validationSchema={signupSchema}
@@ -159,9 +179,47 @@ const HomePage: React.FC = () => {
                             )}
                           </Field>
                         </Box>
+                        <Box mt={2}>
+                          <FormLabel htmlFor="userType">You are a...</FormLabel>
+                          <Stack
+                            spacing={2}
+                            alignItems="start"
+                            textAlign="left"
+                          >
+                            <Field name="userType" value="host" type="checkbox">
+                              {({ field }: FieldProps) => (
+                                <FormControl>
+                                  <Checkbox {...field}>Party Host</Checkbox>
+                                </FormControl>
+                              )}
+                            </Field>
+                            <Field
+                              name="userType"
+                              value="attendee"
+                              type="checkbox"
+                            >
+                              {({ field }: FieldProps) => (
+                                <FormControl>
+                                  <Checkbox {...field}>Party Attendee</Checkbox>
+                                </FormControl>
+                              )}
+                            </Field>
+                            <Field
+                              name="userType"
+                              value="influencer"
+                              type="checkbox"
+                            >
+                              {({ field }: FieldProps) => (
+                                <FormControl>
+                                  <Checkbox {...field}>Influencer</Checkbox>
+                                </FormControl>
+                              )}
+                            </Field>
+                          </Stack>
+                        </Box>
                         <Button
                           mt={6}
-                          colorScheme="teal"
+                          colorScheme="blue"
                           type="submit"
                           isDisabled={!props.isValid}
                           isLoading={loading}
