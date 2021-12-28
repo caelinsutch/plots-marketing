@@ -1,55 +1,29 @@
 import * as React from 'react';
-import { PageContainer } from '../Components';
-import {
-  Input,
-  Box,
-  Text,
-  Flex,
-  Button,
-  FormLabel,
-  FormControl,
-  FormErrorMessage,
-  useToast,
-  Checkbox,
-  Stack,
-} from '@chakra-ui/react';
-import { Field, FieldProps, Formik, FormikValues } from 'formik';
-import { array, object, string } from 'yup';
+import { Header, PageContainer } from '../Components';
+import { Box, Text, Flex, Button, useToast } from '@chakra-ui/react';
 import { addWaitlist } from '../Firebase';
-import { PHONE_REGEX, USER_ID } from '../Constants';
+import { USER_ID } from '../Constants';
 import { useState, useEffect } from 'react';
-import { WaitlistSuccess } from '../PageComponents/Home';
+import { SignupFormData, WaitlistSuccess } from '../PageComponents/Home';
 import Logo from '../Assets/Images/logo.svg';
-
-type FormData = {
-  name: string;
-  email: string;
-  phone: string;
-  userType: string[];
-};
+import { useForm } from 'react-hook-form';
+import { SignupForm } from '../PageComponents';
 
 const HomePage: React.FC = () => {
   const toast = useToast();
   const [userId, setUserId] = useState<string>();
   const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignupFormData>();
 
   useEffect(() => {
     setUserId(localStorage.getItem(USER_ID) || undefined);
   }, []);
 
-  const signupSchema = object().shape({
-    email: string().email().required('Email is required'),
-    phone: string()
-      .required('Phone is required')
-      .matches(PHONE_REGEX, 'Phone number is not valid'),
-    name: string().required('Name is required'),
-    userType: array(),
-  });
-
-  const handleSubmit = async (
-    values: FormData,
-    { setSubmitting }: FormikValues,
-  ) => {
+  const onSubmit = async (values: SignupFormData) => {
     try {
       setLoading(true);
       const res = await addWaitlist(values);
@@ -68,18 +42,12 @@ const HomePage: React.FC = () => {
       });
     } finally {
       setLoading(false);
-      setSubmitting(false);
     }
   };
 
   return (
     <PageContainer>
-      <Flex
-        height="100vh"
-        width="100%"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Flex width="100%" alignItems="center" justifyContent="center" mt={4}>
         <Box textAlign="center">
           <Box mx="auto">
             <Logo
@@ -104,132 +72,17 @@ const HomePage: React.FC = () => {
               <>
                 <Text fontWeight="bold">Be the first to get access</Text>
                 <Box marginTop={2}>
-                  <Formik
-                    initialValues={
-                      {
-                        email: '',
-                        phone: '',
-                        name: '',
-                        userType: [],
-                      } as FormData
-                    }
-                    onSubmit={handleSubmit}
-                    validationSchema={signupSchema}
+                  <SignupForm errors={errors} register={register} />
+                  <Button
+                    my={6}
+                    colorScheme="blue"
+                    type="submit"
+                    isDisabled={Object.keys(errors).length > 0}
+                    isLoading={loading}
+                    onClick={handleSubmit(onSubmit)}
                   >
-                    {(props) => (
-                      <>
-                        <Field name="name">
-                          {({ field, form }: FieldProps) => (
-                            <FormControl
-                              isInvalid={Boolean(
-                                form.errors.name && form.touched.name,
-                              )}
-                            >
-                              <FormLabel htmlFor="name">Name</FormLabel>
-                              <Input
-                                {...field}
-                                id="name"
-                                placeholder="Chad Chaddington"
-                              />
-                              <FormErrorMessage>
-                                {form.errors.name}
-                              </FormErrorMessage>
-                            </FormControl>
-                          )}
-                        </Field>
-                        <Box mt={2}>
-                          <Field name="email">
-                            {({ field, form }: FieldProps) => (
-                              <FormControl
-                                isInvalid={Boolean(
-                                  form.errors.email && form.touched.email,
-                                )}
-                              >
-                                <FormLabel htmlFor="email">Email</FormLabel>
-                                <Input
-                                  {...field}
-                                  id="email"
-                                  placeholder="chad@gmail.com"
-                                />
-                                <FormErrorMessage>
-                                  {form.errors.email}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )}
-                          </Field>
-                        </Box>
-                        <Box mt={2}>
-                          <Field name="phone">
-                            {({ field, form }: FieldProps) => (
-                              <FormControl
-                                isInvalid={Boolean(
-                                  form.errors.phone && form.touched.phone,
-                                )}
-                              >
-                                <FormLabel htmlFor="phone">Phone</FormLabel>
-                                <Input
-                                  {...field}
-                                  id="phone"
-                                  placeholder="9163171234"
-                                />
-                                <FormErrorMessage>
-                                  {form.errors.phone}
-                                </FormErrorMessage>
-                              </FormControl>
-                            )}
-                          </Field>
-                        </Box>
-                        <Box mt={2}>
-                          <FormLabel htmlFor="userType">You are a...</FormLabel>
-                          <Stack
-                            spacing={2}
-                            alignItems="start"
-                            textAlign="left"
-                          >
-                            <Field name="userType" value="host" type="checkbox">
-                              {({ field }: FieldProps) => (
-                                <FormControl>
-                                  <Checkbox {...field}>Party Host</Checkbox>
-                                </FormControl>
-                              )}
-                            </Field>
-                            <Field
-                              name="userType"
-                              value="attendee"
-                              type="checkbox"
-                            >
-                              {({ field }: FieldProps) => (
-                                <FormControl>
-                                  <Checkbox {...field}>Party Attendee</Checkbox>
-                                </FormControl>
-                              )}
-                            </Field>
-                            <Field
-                              name="userType"
-                              value="influencer"
-                              type="checkbox"
-                            >
-                              {({ field }: FieldProps) => (
-                                <FormControl>
-                                  <Checkbox {...field}>Influencer</Checkbox>
-                                </FormControl>
-                              )}
-                            </Field>
-                          </Stack>
-                        </Box>
-                        <Button
-                          my={6}
-                          colorScheme="blue"
-                          type="submit"
-                          isDisabled={!props.isValid}
-                          isLoading={loading}
-                          onClick={() => props.handleSubmit()}
-                        >
-                          Submit
-                        </Button>
-                      </>
-                    )}
-                  </Formik>
+                    Submit
+                  </Button>
                 </Box>
               </>
             )}

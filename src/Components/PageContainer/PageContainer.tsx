@@ -1,7 +1,8 @@
 import React from 'react';
-import { ChakraProvider, Box } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 import { Helmet } from 'react-helmet';
-import theme from '../../Theme';
+import Header from '../Header';
+import Footer from '../Footer';
 
 type PageContainerProps = {
   name?: string;
@@ -17,7 +18,13 @@ const PageContainer: React.FC<PageContainerProps> = ({
       <title>{name}</title>
       <link rel="canonical" href="http://whatsplots.app" />
     </Helmet>
-    <Box>{children}</Box>
+    <Flex minHeight="100vh" direction="column">
+      <Header />
+      <Box as="main" flex={1}>
+        {children}
+      </Box>
+      <Footer />
+    </Flex>
   </>
 );
 
