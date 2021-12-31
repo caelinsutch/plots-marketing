@@ -17,7 +17,7 @@ module.exports = {
         short_name: `plots`,
         start_url: `/`,
         background_color: `#1A202C`,
-        theme_color: `#3BA7F5`,
+        theme_color: `#1A202C`,
         display: `minimal-ui`,
         icon: `src/Assets/Images/logo-dark-blue.png`,
       },

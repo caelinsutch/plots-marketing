@@ -1,24 +1,17 @@
 import { Flex, Link, Spacer, Text } from '@chakra-ui/react';
 import React from 'react';
 import { Link as GatsbyLink } from 'gatsby';
-import Logo from '../../Assets/Images/logo.svg';
+import LogoHorizontal from '../../Assets/Images/logoHorizontal.svg';
 
 const Header: React.FC = () => (
   <Flex direction="row" p={4}>
     <GatsbyLink to="/">
-      <Flex direction="row" alignItems="center" cursor="pointer">
-        <Logo
-          style={{
-            height: '45px',
-            width: 'fit-content',
-            marginRight: 'auto',
-            marginLeft: 'auto',
-          }}
-        />
-        <Text fontSize="3xl" color="blue.200" fontWeight="bold" ml={4}>
-          Plots
-        </Text>
-      </Flex>
+      <LogoHorizontal
+        style={{
+          height: '45px',
+          width: 'fit-content',
+        }}
+      />
     </GatsbyLink>
 
     <Spacer />
