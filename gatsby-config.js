@@ -16,10 +16,10 @@ module.exports = {
         name: `plots-marketing`,
         short_name: `plots`,
         start_url: `/`,
-        background_color: `#663399`,
-        theme_color: `#663399`,
+        background_color: `#1A202C`,
+        theme_color: `#3BA7F5`,
         display: `minimal-ui`,
-        icon: `src/Assets/Images/logo-dark-blue.png`, // This path is relative to the root of the site.
+        icon: `src/Assets/Images/logo-dark-blue.png`,
       },
     },
     {

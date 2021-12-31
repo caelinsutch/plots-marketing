@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Header, PageContainer } from '../Components';
+import { PageContainer } from '../Components';
 import { Box, Text, Flex, Button, useToast } from '@chakra-ui/react';
 import { addWaitlist } from '../Firebase';
 import { USER_ID } from '../Constants';
@@ -65,7 +65,7 @@ const HomePage: React.FC = () => {
           <Text fontSize="2xl" fontWeight="semibold" as="h2">
             Host and attend local parties.
           </Text>
-          <Box marginTop={8}>
+          <Box marginTop={8} px={4}>
             {userId ? (
               <WaitlistSuccess />
             ) : (
